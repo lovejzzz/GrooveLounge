@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loot Box Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 style="cursor: default;">Groove Lounge</h1>
+            <div class="currency-display">
+                <span id="coins">500</span> Coins
+            </div>
+        </header>
+
+        <main>
+            <div class="game-section">
+                <div class="loot-box-section">
+                    <h2>Choose Your Reward</h2>
+                    <div class="loot-box-container">
+                        <div class="loot-box-option">
+                            <h3>Conqueror Box</h3>
+                            <div class="loot-box" id="conquerorBox" data-box-type="conqueror" data-box-cost="100">
+                                <img src="Box/ConquerorBox-close.png" alt="Conqueror Box" class="box-image">
+                                <div class="box-cost">100 Coins</div>
+                            </div>
+                        </div>
+                        <div class="loot-box-option">
+                            <h3>Maestro Box</h3>
+                            <div class="loot-box" id="maestroBox" data-box-type="maestro" data-box-cost="200">
+                                <img src="Box/MaestroBox-close.png" alt="Maestro Box" class="box-image">
+                                <div class="box-cost">200 Coins</div>
+                            </div>
+                        </div>
+                        <div class="loot-box-option">
+                            <h3>Visionary Box</h3>
+                            <div class="loot-box" id="visionaryBox" data-box-type="visionary" data-box-cost="500">
+                                <img src="Box/VisionaryBox-close.png" alt="Visionary Box" class="box-image">
+                                <div class="box-cost">500 Coins</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Reveal Modal (Centered) -->
+                <div id="cardModal" class="card-modal">
+                    <div id="cardReveal" class="card-modal-content">
+                        <div class="card-container">
+                            <div id="revealedCard" class="card">
+                                <!-- Card image will be displayed here -->
+                            </div>
+                            <div id="cardInfo" class="card-info">
+                                <!-- Card info will be displayed here -->
+                            </div>
+                        </div>
+                        <button id="claimCardBtn" class="claim-btn">Claim</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collection-section" id="collectionSection">
+                <h2>Collection Room</h2>
+                <div class="collection-tabs">
+                    <button class="tab-btn active" data-tab="characters">Characters</button>
+                    <button class="tab-btn" data-tab="weapons">Weapons</button>
+                    <button class="tab-btn" data-tab="instruments">Instruments</button>
+                </div>
+                <div class="collection-content">
+                    <div class="tab-content active" id="charactersTab">
+                        <div class="set-grid" id="characterSets"></div>
+                    </div>
+                    <div class="tab-content" id="weaponsTab">
+                        <div class="set-grid" id="weaponSets"></div>
+                    </div>
+                    <div class="tab-content" id="instrumentsTab">
+                        <div class="set-grid" id="instrumentSets"></div>
+                    </div>
+                </div>
+                <div class="collection-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Cards:</span>
+                        <span class="stat-value" id="totalCards">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Sets Completed:</span>
+                        <span class="stat-value" id="completedSetsCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Last Card:</span>
+                        <span class="stat-value" id="rarestCard">None</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="modal" id="completionModal" style="display: none;">
+            <div class="modal-content">
+                <h2>Congratulations!</h2>
+                <p id="completionMessage">You've completed a set!</p>
+                <div id="completionReward">
+                    <p>You've earned a bonus of <span id="rewardAmount">500</span> coins!</p>
+                </div>
+                <button id="closeModalBtn" onclick="document.getElementById('completionModal').style.display='none';">Awesome!</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Prevent spacebar from scrolling the page globally and trigger claim button
+        window.addEventListener('keydown', function(e) {
+            if (e.code === 'Space' || e.keyCode === 32) {
+                e.preventDefault();
+                
+                // Check if card modal is visible
+                const cardModal = document.getElementById('cardModal');
+                if (cardModal && cardModal.style.display === 'flex') {
+                    // Find and click the claim button if it exists
+                    const claimBtn = document.getElementById('claimCardBtn');
+                    if (claimBtn && claimBtn.style.display !== 'none') {
+                        console.log('Spacebar pressed - triggering claim button');
+                        claimBtn.click();
+                    }
+                }
+                
+                return false;
+            }
+        }, {passive: false});
+    </script>
+    <!-- Developer Mode Banner -->
+    <div id="developerBanner" style="display: none;">
+        <span>DEVELOPER MODE</span>
+        <button id="exitDevMode">Exit Developer Mode</button>
+    </div>
+</body>
+</html>

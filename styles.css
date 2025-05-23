@@ -1,0 +1,1195 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+/* Make headings not selectable */
+h1, h2, h3, h4, h5, h6 {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    cursor: default;
+}
+
+/* Developer Mode Banner */
+#developerBanner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ff5722;
+    color: white;
+    padding: 8px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    z-index: 9999;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    animation: pulse-banner 2s infinite alternate;
+}
+
+@keyframes pulse-banner {
+    0% { background-color: #ff5722; }
+    100% { background-color: #e64a19; }
+}
+
+#developerBanner span {
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+#exitDevMode {
+    background-color: white;
+    color: #ff5722;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#exitDevMode:hover {
+    background-color: #f5f5f5;
+    transform: scale(1.05);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1a2a3a 0%, #2c3e50 60%, #4a69bd 120%);
+    color: #fff;
+    min-height: 100vh;
+    letter-spacing: 0.3px;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    overflow: visible; /* Allow content to overflow the container */
+    position: relative; /* Ensure proper positioning context */
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: visible; /* Changed from hidden to allow buttons to be visible */
+}
+
+header::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(241, 196, 15, 0.7), transparent);
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #f1c40f;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 0 0 10px rgba(241, 196, 15, 0.3);
+    letter-spacing: 1px;
+    position: relative;
+    cursor: default !important; /* Force default cursor */
+}
+
+/* No hover effects for h1 */
+header h1:hover {
+    transform: none;
+}
+
+h1:hover {
+    color: #f1c40f; /* Keep the original color */
+    transform: none;
+}
+
+/* Remove the coins text on hover */
+h1:hover::after {
+    content: '';
+}
+
+.currency-display {
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative; /* Ensure proper positioning for absolute children */
+    margin-right: 60px; /* Add space for the buttons */
+}
+
+/* Animation for when coins change */
+@keyframes coin-change {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); background-color: rgba(243, 156, 18, 0.5); }
+    100% { transform: scale(1); }
+}
+
+.currency-display.animate {
+    animation: coin-change 0.6s ease;
+}
+
+/* Animation for the coin number */
+@keyframes coin-number-change {
+    0% { transform: scale(1); color: white; }
+    50% { transform: scale(1.3); color: #f39c12; }
+    100% { transform: scale(1); color: white; }
+}
+
+#coins.animate {
+    animation: coin-number-change 0.6s ease;
+    display: inline-block;
+}
+
+/* Floating coin indicator animation */
+.floating-coin-indicator {
+    position: absolute;
+    font-weight: bold;
+    font-size: 1.4rem;
+    pointer-events: none;
+    animation: float-up 1.5s ease-out forwards;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    top: 0;
+    right: 10px;
+    z-index: 100;
+}
+
+@keyframes float-up {
+    0% {
+        opacity: 0;
+        transform: translateY(0);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(-20px);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(-40px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-60px);
+    }
+}
+
+.game-section {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.loot-box-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.loot-box-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.loot-box-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 15px 30px;
+}
+
+/* Base style for all box titles */
+.loot-box-option h3 {
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Conqueror Box - Bronze/Gold style */
+.loot-box-option:nth-child(1) h3 {
+    color: #e6a832;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6), 0 0 5px rgba(255, 215, 0, 0.5);
+    font-family: 'Arial', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+/* Maestro Box - Silver/Blue style */
+.loot-box-option:nth-child(2) h3 {
+    color: #a2c4db;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6), 0 0 5px rgba(135, 206, 250, 0.5);
+    font-family: 'Arial', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+/* Visionary Box - Purple/Gold style with misty bloom effect */
+.loot-box-option:nth-child(3) h3 {
+    color: #d9a9ff;
+    text-shadow: 0 0 5px rgba(217, 169, 255, 0.8),
+                 0 0 10px rgba(186, 85, 211, 0.6),
+                 0 0 15px rgba(148, 0, 211, 0.4),
+                 0 0 20px rgba(138, 43, 226, 0.2);
+    font-family: 'Arial', sans-serif;
+    letter-spacing: 1px;
+    font-weight: 600;
+    filter: blur(0.3px);
+    animation: misty-glow 3s infinite alternate;
+}
+
+@keyframes misty-glow {
+    0% {
+        text-shadow: 0 0 5px rgba(217, 169, 255, 0.8),
+                     0 0 10px rgba(186, 85, 211, 0.6),
+                     0 0 15px rgba(148, 0, 211, 0.4),
+                     0 0 20px rgba(138, 43, 226, 0.2);
+    }
+    100% {
+        text-shadow: 0 0 7px rgba(217, 169, 255, 0.9),
+                     0 0 14px rgba(186, 85, 211, 0.7),
+                     0 0 21px rgba(148, 0, 211, 0.5),
+                     0 0 28px rgba(138, 43, 226, 0.3);
+    }
+}
+
+.loot-box {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    margin: 0 auto 20px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    overflow: hidden;
+    filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.3));
+}
+
+.loot-box:hover {
+    transform: translateY(-5px) scale(1.05);
+    filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.4)) brightness(1.1);
+}
+
+.open-btn {
+    display: block;
+    margin: 0 auto 30px;
+    padding: 12px 25px;
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.open-btn:hover {
+    background: linear-gradient(135deg, #e67e22, #d35400);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.open-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Box cost indicator that appears on hover */
+/* Base box cost style */
+.box-cost {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+    z-index: 5;
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    font-family: 'Poppins', sans-serif;
+    white-space: nowrap;
+    min-width: 120px;
+    text-align: center;
+}
+
+/* Conqueror Box cost style - gold/bronze theme */
+#conquerorBox .box-cost {
+    background: linear-gradient(135deg, #e6a832, #d35400);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(230, 168, 50, 0.3);
+}
+
+/* Maestro Box cost style - silver/blue theme */
+#maestroBox .box-cost {
+    background: linear-gradient(135deg, #a2c4db, #3498db);
+    border: 1px solid rgba(135, 206, 250, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(52, 152, 219, 0.3);
+}
+
+/* Visionary Box cost style - purple/violet theme */
+#visionaryBox .box-cost {
+    background: linear-gradient(135deg, #c792ea, #8e44ad);
+    border: 1px solid rgba(186, 85, 211, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(155, 89, 182, 0.3);
+}
+
+.loot-box:hover .box-cost {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-10px);
+}
+
+.loot-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.box-controls {
+    margin-top: 20px;
+}
+
+button {
+    background: linear-gradient(135deg, #f39c12, #e74c3c);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Modal overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Card reveal modal */
+.card-reveal-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(40, 44, 52, 0.95);
+    padding: 30px;
+    border-radius: 15px;
+    /* Removed golden box-shadow that was creating the light circle */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    max-width: 90%;
+    max-height: 90%;
+    overflow: visible !important; /* Ensure stamp is not clipped by the modal */
+    animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    transform: scale(0.5);
+    opacity: 0;
+    position: relative; /* For positioning the NEW! stamp */
+}
+
+@keyframes pop-in {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* NEW! stamp styles */
+.new-stamp {
+    position: absolute;
+    top: -35px;  /* Positioned further up to clearly extend beyond the modal edge */
+    right: -35px; /* Positioned further right to clearly extend beyond the modal edge */
+    background: linear-gradient(135deg, #ff5e62, #ff9966);
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 15px 20px; /* Larger padding for better visibility */
+    border-radius: 50%;
+    transform: rotate(15deg);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Enhanced shadow for better depth */
+    z-index: 1000; /* Very high z-index to ensure it's always on top */
+    animation: stamp-animation 1.5s infinite;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    border: 3px solid white; /* Thicker border for better visibility */
+    overflow: visible; /* Ensure the stamp isn't clipped */
+    pointer-events: none; /* Prevent it from blocking interactions */
+}
+
+@keyframes stamp-animation {
+    0% {
+        transform: rotate(15deg) scale(1);
+    }
+    50% {
+        transform: rotate(15deg) scale(1.1);
+    }
+    100% {
+        transform: rotate(15deg) scale(1);
+    }
+}
+
+.claim-btn {
+    margin: 20px auto;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    border: none;
+    border-radius: 25px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(253, 160, 133, 0.4);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    min-width: 150px;
+}
+
+.claim-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(253, 160, 133, 0.6);
+    background: linear-gradient(135deg, #f6d365 0%, #ff7b54 100%);
+}
+
+.claim-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(253, 160, 133, 0.4);
+}
+
+.disabled-btn, .claim-btn.disabled-btn {
+    background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+    cursor: not-allowed;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transform: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(2px);
+    padding: 12px 30px;
+    border-radius: 25px;
+    min-width: 150px;
+}
+
+.disabled-btn:hover, .claim-btn.disabled-btn:hover {
+    transform: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card {
+    width: 200px;
+    height: 300px;
+    margin-bottom: 20px;
+    position: relative;
+    transform-style: preserve-3d;
+    /* Smoother transition with slight delay for more natural movement */
+    transition: transform 0.15s cubic-bezier(0.33, 1, 0.68, 1);
+    will-change: transform;
+    --reflection-angle: 130deg;
+    --reflection-opacity: 0.2;
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.4));
+}
+
+/* Card reflection overlay with custom properties */
+.card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 10px;
+    background: linear-gradient(var(--reflection-angle), rgba(255,255,255,calc(var(--reflection-opacity) * 0.6)) 0%, rgba(255,255,255,0) 80%);
+    z-index: 2;
+    pointer-events: none;
+    /* Smoother transition for reflection */
+    transition: all 0.15s cubic-bezier(0.33, 1, 0.68, 1);
+    /* Add subtle glow effect */
+    box-shadow: inset 0 0 15px rgba(255,255,255,0.05);
+    transform: translateZ(1px);
+    transform: translateZ(1px);
+}
+
+.card-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.card-info h3 {
+    margin-bottom: 5px;
+    font-size: 1.5rem;
+}
+
+.card-info .rarity {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-info .value {
+    font-size: 1.2rem;
+    color: gold;
+}
+
+.collection-section {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.05);
+    background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4));
+    backdrop-filter: blur(5px);
+    position: relative;
+    overflow: hidden;
+}
+
+.collection-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 200%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shine-line 4s infinite linear;
+}
+
+@keyframes shine-line {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.collection-section h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #f39c12;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.collection-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) inset;
+    position: relative;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    min-width: 120px;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #f39c12;
+}
+
+.collection-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 10px;
+}
+
+.tab-btn {
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 25px;
+    margin-right: 10px;
+    border-radius: 8px 8px 0 0;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.5px;
+}
+
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(243, 156, 18, 0), transparent);
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    color: white;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1));
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tab-btn:hover::after {
+    background: linear-gradient(90deg, transparent, rgba(243, 156, 18, 0.5), transparent);
+}
+
+.tab-btn.active {
+    color: white;
+    background: linear-gradient(to bottom, rgba(243, 156, 18, 0.2), rgba(243, 156, 18, 0.1));
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), 0 0 15px rgba(243, 156, 18, 0.2);
+    border-bottom: none;
+}
+
+.tab-btn.active::after {
+    background: linear-gradient(90deg, transparent, rgba(243, 156, 18, 0.8), transparent);
+    height: 3px;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.set-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.card-set {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.card-set:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+}
+
+.card-set::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #f39c12, #e74c3c);
+    opacity: 0.7;
+}
+
+.card-set.complete::before {
+    background: linear-gradient(90deg, #2ecc71, #1abc9c);
+    opacity: 1;
+}
+
+.set-title {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 8px;
+    color: #f39c12;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+}
+
+.card-set.complete .set-title {
+    color: #2ecc71;
+}
+
+/* Character card set titles - all have the same color */
+.character-sets .set-title {
+    color: #3498db; /* Blue color for character sets */
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.4), 0 0 10px rgba(52, 152, 219, 0.2);
+}
+
+.set-completion {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 5px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+
+.set-completion.complete {
+    color: #2ecc71;
+    font-weight: bold;
+    background-color: rgba(46, 204, 113, 0.2);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.set-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.set-card {
+    position: relative;
+    aspect-ratio: 2/3;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border: 2px solid transparent;
+}
+
+.set-card:hover {
+    transform: scale(1.08) translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    z-index: 10;
+}
+
+.set-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.3s ease;
+}
+
+.set-card:hover img {
+    filter: brightness(1.2);
+}
+
+.set-card.locked {
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.3) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.3) 75%, transparent 75%, transparent);
+    background-size: 10px 10px;
+}
+
+.set-card.locked::after {
+    content: '?';
+    font-size: 1.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.set-card.classic { border-color: #95a5a6; }
+.set-card.rare { border-color: #3498db; }
+.set-card.epic { border-color: #9b59b6; }
+.set-card.legendary { border-color: #f1c40f; }
+.set-card.mythic { border-color: #e74c3c; }
+.set-card.gold { border-color: #f39c12; }
+.set-card.sliver { border-color: #bdc3c7; }
+.set-card.secret { border-color: #1abc9c; }
+.set-card.supreme { border-color: #2ecc71; }
+
+.card-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    perspective: 1200px;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.card-modal.fade-out {
+    opacity: 0;
+}
+
+.card-modal-content {
+    background: linear-gradient(135deg, #2c3e50, #4a69bd);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    animation: modalFadeIn 0.5s ease;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Full-resolution card preview */
+.full-preview-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.full-preview-modal.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.full-preview-container {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.full-preview-container img {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.close-preview {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.close-preview:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Card preview image has no special styling */
+
+/* Modal styling for completion modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #2c3e50, #4a69bd);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    animation: modalFadeIn 0.5s ease;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Removed the radial gradient that was causing the lighter middle area */
+.modal-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal h2 {
+    margin-bottom: 15px;
+    color: #f39c12;
+    font-size: 2rem;
+    text-align: center;
+    width: 100%;
+    display: block;
+}
+
+.modal p {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+#completionReward {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 10px;
+    margin: 0 auto 20px;
+    text-align: center;
+    width: 80%;
+}
+
+#rewardAmount {
+    color: gold;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+/* Center the Awesome! button */
+#closeModalBtn {
+    display: block;
+    margin: 0 auto;
+    min-width: 150px;
+}
+
+/* Rarity colors */
+.classic {
+    color: #95a5a6;
+}
+
+.sliver {
+    color: #bdc3c7;
+}
+
+.gold {
+    color: #f39c12;
+}
+
+/* Rare and above rarities with shining effect */
+.rare {
+    color: #3498db;
+    text-shadow: 0 0 5px rgba(52, 152, 219, 0.7);
+    animation: shine-rare 2s infinite alternate;
+}
+
+.supreme {
+    color: #2ecc71;
+    text-shadow: 0 0 5px rgba(46, 204, 113, 0.7);
+    animation: shine-supreme 2s infinite alternate;
+}
+
+.epic {
+    color: #9b59b6;
+    text-shadow: 0 0 5px rgba(155, 89, 182, 0.7);
+    animation: shine-epic 2.5s infinite alternate;
+}
+
+.legendary {
+    color: #f1c40f;
+    text-shadow: 0 0 5px rgba(241, 196, 15, 0.7);
+    animation: shine-legendary 3s infinite alternate;
+}
+
+.mythic {
+    color: #e74c3c;
+    text-shadow: 0 0 5px rgba(231, 76, 60, 0.7);
+    animation: shine-mythic 3.5s infinite alternate;
+}
+
+.secret {
+    color: #1abc9c;
+    text-shadow: 0 0 5px rgba(26, 188, 156, 0.7);
+    animation: shine-secret 4s infinite alternate;
+}
+
+/* Shining animations for each rarity */
+@keyframes shine-rare {
+    0% { text-shadow: 0 0 5px rgba(52, 152, 219, 0.7); }
+    100% { text-shadow: 0 0 10px rgba(52, 152, 219, 0.9), 0 0 15px rgba(52, 152, 219, 0.5); }
+}
+
+@keyframes shine-supreme {
+    0% { text-shadow: 0 0 5px rgba(46, 204, 113, 0.7); }
+    100% { text-shadow: 0 0 10px rgba(46, 204, 113, 0.9), 0 0 15px rgba(46, 204, 113, 0.5); }
+}
+
+@keyframes shine-epic {
+    0% { text-shadow: 0 0 5px rgba(155, 89, 182, 0.7); }
+    100% { text-shadow: 0 0 10px rgba(155, 89, 182, 0.9), 0 0 15px rgba(155, 89, 182, 0.5), 0 0 20px rgba(155, 89, 182, 0.3); }
+}
+
+@keyframes shine-legendary {
+    0% { text-shadow: 0 0 5px rgba(241, 196, 15, 0.7); }
+    100% { text-shadow: 0 0 10px rgba(241, 196, 15, 0.9), 0 0 15px rgba(241, 196, 15, 0.7), 0 0 20px rgba(241, 196, 15, 0.5), 0 0 25px rgba(241, 196, 15, 0.3); }
+}
+
+@keyframes shine-mythic {
+    0% { text-shadow: 0 0 5px rgba(231, 76, 60, 0.7); }
+    100% { text-shadow: 0 0 10px rgba(231, 76, 60, 0.9), 0 0 15px rgba(231, 76, 60, 0.7), 0 0 20px rgba(231, 76, 60, 0.5), 0 0 25px rgba(231, 76, 60, 0.3), 0 0 30px rgba(231, 76, 60, 0.2); }
+}
+
+@keyframes shine-secret {
+    0% { text-shadow: 0 0 5px rgba(26, 188, 156, 0.7); }
+    100% { text-shadow: 0 0 10px rgba(26, 188, 156, 0.9), 0 0 15px rgba(26, 188, 156, 0.7), 0 0 20px rgba(26, 188, 156, 0.5), 0 0 25px rgba(26, 188, 156, 0.3), 0 0 30px rgba(26, 188, 156, 0.2), 0 0 35px rgba(26, 188, 156, 0.1); }
+}
+
+/* Animation for card reveal */
+@keyframes cardReveal {
+    0% {
+        transform: translateY(-300px) scale(0.5);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(30px) scale(1.1) rotateY(180deg);
+        opacity: 1;
+    }
+    75% {
+        transform: translateY(-15px) scale(1.05) rotateY(0);
+    }
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.reveal-animation {
+    animation: cardReveal 1s ease forwards;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .game-section {
+        flex-direction: column;
+    }
+
+    .loot-box {
+        width: 200px;
+        height: 200px;
+    }
+
+    .set-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
