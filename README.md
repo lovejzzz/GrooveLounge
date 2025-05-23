@@ -30,11 +30,15 @@ A web-based card collection game where you open loot boxes to collect character,
 - Sword
 
 ### Instruments
-- Drums
-- Guitar
-- Piano
+- Bass
+- Clarinet
+- Flute
+- Harmonica
+- Keys
 - Saxophone
+- Trombone
 - Trumpet
+- Ukulele
 - Violin
 
 ## Card Rarities
