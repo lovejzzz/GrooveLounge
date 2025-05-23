@@ -143,8 +143,7 @@ function initGame() {
         });
     });
     
-    // Event listeners - skip openBoxBtn and claimCardBtn as they're handled separately
-    elements.lootBox.addEventListener('click', openBox);
+    // Event listeners for loot boxes are now handled individually for each box type
     
     // Make sure these elements exist before adding listeners
     if (elements.closeModalBtn) {
