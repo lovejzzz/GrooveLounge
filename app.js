@@ -1375,7 +1375,19 @@ function renderCategoryCollection(category) {
                 cardElement.className = `set-card ${hasCard ? rarity : 'locked'}`;
                 
                 if (hasCard) {
+                    // Count how many of this card the user has
+                    const cardCount = getCardCount(category, type, cardId);
+                    
+                    // Create the HTML with the card image
                     cardElement.innerHTML = `<img src="${getCardImagePath(category, type, rarity)}" alt="${type} ${rarity}">`;
+                    
+                    // Add count badge if user has more than one of this card
+                    if (cardCount > 1) {
+                        const countBadge = document.createElement('div');
+                        countBadge.className = 'card-count-badge';
+                        countBadge.textContent = `x${cardCount}`;
+                        cardElement.appendChild(countBadge);
+                    }
                     
                     // Add tooltip with card info
                     cardElement.title = `${capitalizeFirstLetter(type)} - ${capitalizeFirstLetter(rarity)}
@@ -1489,7 +1501,7 @@ function showCardDetails(category, type, rarity) {
                 <h3>${capitalizeFirstLetter(type)}</h3>
                 <p class="rarity ${rarity}">${capitalizeFirstLetter(rarity)}</p>
                 <p class="value">${displayValue} Coins</p>
-                <p class="card-count">You have: <span class="count-number">${cardCount}</span> of this card ${gameState.developerMode ? '<button id="addCardBtn" class="dev-add-card-btn">+</button>' : ''}</p>
+                <p class="card-count">X${cardCount} ${gameState.developerMode ? '<button id="addCardBtn" class="dev-add-card-btn">+</button>' : ''}</p>
                 <p class="card-description">This ${rarity} ${type} card is part of the ${category} collection.</p>
                 <p class="card-drop-rate">Drop Rate: <span class="drop-rate-value ${rarity}">${dropRate}</span></p>
             </div>
@@ -1569,10 +1581,11 @@ function showCardDetails(category, type, rarity) {
             gameState.collection[category][type].push(`${type}-${rarity}`);
             
             // Update the count display
-            const countElement = document.querySelector('.count-number');
-            if (countElement) {
+            const cardCountElement = document.querySelector('.card-count');
+            if (cardCountElement) {
                 const newCount = getCardCount(category, type, `${type}-${rarity}`);
-                countElement.textContent = newCount;
+                // Update the text content before the button
+                cardCountElement.childNodes[0].nodeValue = `X${newCount} `;
                 
                 // Update the sell button state if count is now > 1
                 if (newCount > 1) {
@@ -1612,7 +1625,21 @@ function showCardDetails(category, type, rarity) {
                                         
                                         // Update the card count display
                                         const newCount = getCardCount(category, type, cardId);
-                                        countElement.textContent = newCount;
+                                        const cardCountElement = document.querySelector('.card-count');
+                                        if (cardCountElement) {
+                                            // In developer mode, we need to handle the text node differently
+                                            if (gameState.developerMode) {
+                                                // Replace the entire content and preserve the button
+                                                const addCardBtn = cardCountElement.querySelector('#addCardBtn');
+                                                cardCountElement.innerHTML = `X${newCount} `;
+                                                if (addCardBtn) {
+                                                    cardCountElement.appendChild(addCardBtn);
+                                                }
+                                            } else {
+                                                // Regular update for non-developer mode
+                                                cardCountElement.textContent = `X${newCount}`;
+                                            }
+                                        }
                                         
                                         // If this was the last card of this type, disable the sell button
                                         if (newCount <= 1) {
@@ -1648,7 +1675,21 @@ function showCardDetails(category, type, rarity) {
                                 
                                 // Update the card count display
                                 const newCount = getCardCount(category, type, cardId);
-                                countElement.textContent = newCount;
+                                const cardCountElement = document.querySelector('.card-count');
+                                if (cardCountElement) {
+                                    // In developer mode, we need to handle the text node differently
+                                    if (gameState.developerMode) {
+                                        // Replace the entire content and preserve the button
+                                        const addCardBtn = cardCountElement.querySelector('#addCardBtn');
+                                        cardCountElement.innerHTML = `X${newCount} `;
+                                        if (addCardBtn) {
+                                            cardCountElement.appendChild(addCardBtn);
+                                        }
+                                    } else {
+                                        // Regular update for non-developer mode
+                                        cardCountElement.textContent = `X${newCount}`;
+                                    }
+                                }
                                 
                                 // If this was the last card of this type, disable the sell button
                                 if (newCount <= 1) {
@@ -1732,9 +1773,20 @@ function showCardDetails(category, type, rarity) {
                         
                         // Update the card count in the modal
                         const newCardCount = getCardCount(category, type, cardId);
-                        const countElement = cardModal.querySelector('.count-number');
-                        if (countElement) {
-                            countElement.textContent = newCardCount;
+                        const cardCountElement = cardModal.querySelector('.card-count');
+                        if (cardCountElement) {
+                            // In developer mode, we need to handle the text node differently
+                            if (gameState.developerMode) {
+                                // Replace the entire content and preserve the button
+                                const addCardBtn = cardCountElement.querySelector('#addCardBtn');
+                                cardCountElement.innerHTML = `X${newCardCount} `;
+                                if (addCardBtn) {
+                                    cardCountElement.appendChild(addCardBtn);
+                                }
+                            } else {
+                                // Regular update for non-developer mode
+                                cardCountElement.textContent = `X${newCardCount}`;
+                            }
                         }
                         
                         // Update the sell button if we now have only 1 card left
@@ -1774,9 +1826,20 @@ function showCardDetails(category, type, rarity) {
                     
                     // Update the card count in the modal
                     const newCardCount = getCardCount(category, type, cardId);
-                    const countElement = cardModal.querySelector('.count-number');
-                    if (countElement) {
-                        countElement.textContent = newCardCount;
+                    const cardCountElement = cardModal.querySelector('.card-count');
+                    if (cardCountElement) {
+                        // In developer mode, we need to handle the text node differently
+                        if (gameState.developerMode) {
+                            // Replace the entire content and preserve the button
+                            const addCardBtn = cardCountElement.querySelector('#addCardBtn');
+                            cardCountElement.innerHTML = `X${newCardCount} `;
+                            if (addCardBtn) {
+                                cardCountElement.appendChild(addCardBtn);
+                            }
+                        } else {
+                            // Regular update for non-developer mode
+                            cardCountElement.textContent = `X${newCardCount}`;
+                        }
                     }
                     
                     // Update the sell button if we now have only 1 card left
