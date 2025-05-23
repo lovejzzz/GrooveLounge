@@ -222,13 +222,23 @@ function loadGame() {
 }
 
 // Update coins display with animation and rolling numbers
+// Track if this is the first time updating coins display
+let isFirstCoinUpdate = true;
+
 function updateCoinsDisplay() {
     // Store previous coin amount to check if there was a change
     const previousCoins = parseInt(elements.coins.textContent);
     const newCoins = gameState.coins;
     const coinDifference = newCoins - previousCoins;
     
-    // Only animate if coins have changed and it's not the initial load
+    // Skip animation on first load or if there's no change
+    if (isFirstCoinUpdate) {
+        elements.coins.textContent = newCoins;
+        isFirstCoinUpdate = false;
+        return;
+    }
+    
+    // Only animate if coins have changed
     if (coinDifference !== 0 && !isNaN(previousCoins)) {
         // Create floating indicator for coin change
         const floatingIndicator = document.createElement('div');
