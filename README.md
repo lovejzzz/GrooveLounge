@@ -47,31 +47,65 @@ Each card type has 9 different rarities with varying drop rates and values:
 
 | Rarity    | Sale Value | Drop Rate (%) | Description           |
 |-----------|------------|---------------|-----------------------|
-| Classic   | 5 Coins    | 55.0%         | Common, high drop rate|
-| Silver    | 10 Coins   | 20.0%         | Slightly rarer        |
-| Gold      | 20 Coins   | 10.0%         | Noticeable rarity     |
-| Rare      | 50 Coins   | 6.0%          | Strong cards          |
-| Supreme   | 100 Coins  | 3.5%          | High-impact           |
-| Epic      | 150 Coins  | 2.5%          | Very rare             |
-| Legendary | 250 Coins  | 1.8%          | Game-changing         |
-| Mythic    | 500 Coins  | 0.9%          | Ultra-rare            |
-| Secret    | 1000 Coins | 0.3%          | Rarest of all         |
+| Classic   | 10 Coins   | 55.0%         | Common, high drop rate|
+| Silver    | 20 Coins   | 20.0%         | Slightly rarer        |
+| Gold      | 40 Coins   | 10.0%         | Noticeable rarity     |
+| Rare      | 80 Coins   | 6.0%          | Strong cards          |
+| Supreme   | 150 Coins  | 3.5%          | High-impact           |
+| Epic      | 225 Coins  | 2.5%          | Very rare             |
+| Legendary | 350 Coins  | 1.8%          | Game-changing         |
+| Mythic    | 600 Coins  | 0.9%          | Ultra-rare            |
+| Secret    | 700-1500 Coins | 0.3%      | Rarest of all         |
 
 ## Loot Box Types
 
 ### Conqueror Box (100 Coins)
 The standard box with a balanced distribution of all rarities.
 
-### Maestro Box (200 Coins)
-A premium box with improved odds for higher rarities:
-- No Classic cards (0%)
-- Increased chance for Silver (35%) and Gold (25%)
-- Better odds for rare cards
+#### Rarity Distribution:
+| Rarity    | Drop Rate | Sale Value |
+|-----------|-----------|------------|
+| Classic   | 55.0%     | 10 Coins   |
+| Silver    | 20.0%     | 20 Coins   |
+| Gold      | 10.0%     | 40 Coins   |
+| Rare      | 6.0%      | 80 Coins   |
+| Supreme   | 3.5%      | 150 Coins  |
+| Epic      | 2.5%      | 225 Coins  |
+| Legendary | 1.8%      | 350 Coins  |
+| Mythic    | 0.9%      | 600 Coins  |
+| Secret    | 0.3%      | 700-1500 Coins |
 
-### Virtuoso Box (300 Coins)
-The premium box with the best odds for high-rarity cards:
-- No Classic or Silver cards
-- Significantly higher chances for Epic, Legendary, Mythic, and Secret rarities
+### Maestro Box (200 Coins)
+A premium box with improved odds for higher rarities.
+
+#### Rarity Distribution:
+| Rarity    | Drop Rate | Sale Value |
+|-----------|-----------|------------|
+| Classic   | 0%        | -          |
+| Silver    | 35.0%     | 20 Coins   |
+| Gold      | 25.0%     | 40 Coins   |
+| Rare      | 20.0%     | 80 Coins   |
+| Supreme   | 10.0%     | 150 Coins  |
+| Epic      | 6.0%      | 225 Coins  |
+| Legendary | 2.5%      | 350 Coins  |
+| Mythic    | 1.0%      | 600 Coins  |
+| Secret    | 0.5%      | 700-1500 Coins |
+
+### Visionary Box (500 Coins)
+The premium box with the best odds for high-rarity cards.
+
+#### Rarity Distribution:
+| Rarity    | Drop Rate | Sale Value |
+|-----------|-----------|------------|
+| Classic   | 0%        | -          |
+| Silver    | 0%        | -          |
+| Gold      | 0%        | -          |
+| Rare      | 0%        | -          |
+| Supreme   | 45.0%     | 150 Coins  |
+| Epic      | 25.0%     | 225 Coins  |
+| Legendary | 15.0%     | 350 Coins  |
+| Mythic    | 10.0%     | 600 Coins  |
+| Secret    | 5.0%      | 700-1500 Coins |
 
 ## Developer Mode
 
