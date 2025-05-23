@@ -111,3 +111,25 @@ Simply open the `index.html` file in your web browser to start playing!
 - No external libraries or frameworks required
 - Uses local storage for game state persistence
 - All assets included in the repository
+
+## Update Log
+
+### Version 0.1 (May 23, 2025)
+
+#### New Features
+- **Slot Machine Animation**: Added an engaging flip board animation for revealing Secret card values
+- **Enhanced Sound Effects**: Integrated sound effects for the slot machine animation
+  - SlotMachine.mp3 plays during the animation
+  - Selling.wav plays when the user confirms after the animation
+
+#### UI Improvements
+- Removed redundant "Secret Card Value" heading from the slot machine modal
+- Fixed display of drop rates to show correct percentage format
+- Increased width of completion reward message and buttons to prevent text wrapping
+- Added highlighted box around set names in completion messages for better focus
+- Improved button styling with consistent widths and no text wrapping
+
+#### Bug Fixes
+- Fixed issue with sound effects playing at incorrect times
+- Corrected the timing of animations for a smoother experience
+- Ensured proper modal behavior when closing dialogs

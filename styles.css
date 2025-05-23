@@ -483,15 +483,16 @@ button:active {
     border: none;
     border-radius: 25px;
     color: #fff;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(253, 160, 133, 0.4);
     transition: all 0.3s ease;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     display: block;
-    min-width: 150px;
+    min-width: 200px;
+    white-space: nowrap;
 }
 
 .claim-btn:hover {
@@ -519,7 +520,8 @@ button:active {
     backdrop-filter: blur(2px);
     padding: 12px 30px;
     border-radius: 25px;
-    min-width: 150px;
+    min-width: 200px;
+    white-space: nowrap;
 }
 
 .disabled-btn:hover, .claim-btn.disabled-btn:hover {
@@ -1003,8 +1005,8 @@ button:active {
     padding: 30px;
     border-radius: 15px;
     text-align: center;
-    max-width: 500px;
-    width: 90%;
+    max-width: 550px;
+    width: 95%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1052,19 +1054,37 @@ button:active {
     font-size: 1.2rem;
 }
 
+.set-name {
+    display: inline-block;
+    background: rgba(255, 215, 0, 0.2);
+    border: 2px solid rgba(255, 215, 0, 0.4);
+    padding: 3px 8px;
+    border-radius: 6px;
+    color: #f39c12;
+    font-weight: bold;
+    margin: 0 3px;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
 #completionReward {
     background-color: rgba(0, 0, 0, 0.2);
-    padding: 15px;
+    padding: 15px 10px;
     border-radius: 10px;
     margin: 0 auto 20px;
     text-align: center;
-    width: 80%;
+    width: 100%;
+    min-width: 350px;
 }
 
 #rewardAmount {
     color: gold;
     font-weight: bold;
     font-size: 1.5rem;
+}
+
+#completionReward p {
+    white-space: nowrap;
+    font-size: 1.1rem;
 }
 
 /* Center the Awesome! button */

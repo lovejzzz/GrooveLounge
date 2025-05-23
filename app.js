@@ -68,15 +68,15 @@ const cardTypes = {
 const rarities = ['classic', 'silver', 'gold', 'rare', 'supreme', 'epic', 'legendary', 'mythic', 'secret'];
 
 const rarityValues = {
-    classic: 5,
-    silver: 10,
-    gold: 20,
-    rare: 50,
-    supreme: 100,
-    epic: 150,
-    legendary: 250,
-    mythic: 500,
-    secret: 1000
+    classic: 10,
+    silver: 20,
+    gold: 40,
+    rare: 80,
+    supreme: 150,
+    epic: 225,
+    legendary: 350,
+    mythic: 600,
+    secret: 'random' // Will be randomized between 700-1500 when selling
 };
 
 // DOM Elements
@@ -465,10 +465,13 @@ function displayCard(card) {
     elements.revealedCard.innerHTML = `<img src="${imagePath}" alt="${type} ${rarity}">`;
     
     // Set card info
+    // Display value for cards (show ??? for secret cards)
+    const displayValue = rarity === 'secret' ? '???' : value;
+    
     elements.cardInfo.innerHTML = `
         <h3>${capitalizeFirstLetter(type)}</h3>
         <p class="rarity ${rarity}">${capitalizeFirstLetter(rarity)}</p>
-        <p class="value">${value} Coins</p>
+        <p class="value">${displayValue} Coins</p>
     `;
     
     // Play card reveal sound based on rarity
@@ -1024,7 +1027,7 @@ function checkSetCompletion(category, type) {
         gameState.completedSets.push(setId);
         
         // Give reward
-        const reward = 500; // Reward for completing a set
+        const reward = 1000; // Reward for completing a set
         gameState.coins += reward;
         updateCoinsDisplay();
         
@@ -1038,7 +1041,7 @@ function checkSetCompletion(category, type) {
 
 // Show completion modal
 function showCompletionModal(category, type, reward) {
-    elements.completionMessage.textContent = `You've completed the ${capitalizeFirstLetter(type)} ${category} set!`;
+    elements.completionMessage.innerHTML = `You've completed the <span class="set-name">${capitalizeFirstLetter(type)} ${category}</span> set!`;
     elements.rewardAmount.textContent = reward;
     elements.completionModal.style.display = 'flex';
     
@@ -1185,7 +1188,9 @@ function playSound(type, rarity = '') {
         open: 'SoundEffects/OpenBox.mp3',
         collect: 'SoundEffects/Claim.mp3',
         sell: 'SoundEffects/Selling.wav',
-        complete: 'SoundEffects/CompleteASet.mp3'
+        complete: 'SoundEffects/CompleteASet.mp3',
+        slotMachine: 'SoundEffects/SlotMachine.mp3',
+        success: 'SoundEffects/Selling.wav'
     };
     
     // Define online sound files for types we don't have local files for
@@ -1468,37 +1473,45 @@ function showCardDetails(category, type, rarity) {
         case 'secret': dropRate = '0.3%'; break;
         default: dropRate = 'Unknown';
     }
-    
-    // Set modal content
-    cardModal.innerHTML = `
-        <div class="card-modal-content">
-            <div class="card-container horizontal">
-                <div class="card">
-                    <img src="${imagePath}" alt="${type} ${rarity}" class="card-preview-img">
-                </div>
-                <div class="card-info">
-                    <h3>${capitalizeFirstLetter(type)}</h3>
-                    <p class="rarity ${rarity}">${capitalizeFirstLetter(rarity)}</p>
-                    <p class="value">${value} Coins</p>
-                    <p class="card-count">You have: <span class="count-number">${cardCount}</span> of this card</p>
-                    <p class="card-description">This ${rarity} ${type} card is part of the ${category} collection.</p>
-                    <p class="card-drop-rate">Drop Rate: <span class="drop-rate-value ${rarity}">${dropRate}</span></p>
-                </div>
+
+    // Display value for cards (show ??? for secret cards)
+    const displayValue = rarity === 'secret' ? '???' : value;
+
+    // Create modal for card details
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-content card-modal-content';
+    modalContent.innerHTML = `
+        <div class="card-container horizontal">
+            <div class="card" data-3d-handler="handle3DEffect_${Date.now()}">
+                <img src="${imagePath}" alt="${type} ${rarity}" class="card-preview-img">
             </div>
-            <div class="button-container">
-                ${canSell ? `<button id="sellFromCollectionBtn" class="claim-btn">Sell one for ${value} Coins</button>` : 
-                `<button id="sellFromCollectionBtn" disabled class="disabled-btn">You can't sell your last one</button>`}
-                <button id="closeCardDetailBtn" class="claim-btn close-btn">Close</button>
+            <div class="card-info">
+                <h3>${capitalizeFirstLetter(type)}</h3>
+                <p class="rarity ${rarity}">${capitalizeFirstLetter(rarity)}</p>
+                <p class="value">${displayValue} Coins</p>
+                <p class="card-count">You have: <span class="count-number">${cardCount}</span> of this card ${gameState.developerMode ? '<button id="addCardBtn" class="dev-add-card-btn">+</button>' : ''}</p>
+                <p class="card-description">This ${rarity} ${type} card is part of the ${category} collection.</p>
+                <p class="card-drop-rate">Drop Rate: <span class="drop-rate-value ${rarity}">${dropRate}</span></p>
             </div>
         </div>
+        <div class="button-container">
+            <button id="sellFromCollectionBtn" ${canSell ? 'class="claim-btn"' : 'disabled class="disabled-btn"'}>
+                ${canSell ? `Sell one for ${displayValue} Coins` : 'You can\'t sell your last one'}
+            </button>
+            <button id="closeCardDetailBtn" class="claim-btn close-btn">Close</button>
+        </div>
     `;
-    
+    cardModal.innerHTML = '';
+    cardModal.appendChild(modalContent);
+
+    // Slot machine modal is now created in slotMachine.js
+
     // Show modal
     cardModal.style.display = 'flex';
     cardModal.style.justifyContent = 'center';
     cardModal.style.alignItems = 'center';
     cardModal.style.zIndex = '1000'; // Ensure high z-index to overlay everything
-    
+
     // Add 3D effect to the card
     const detailCard = cardModal.querySelector('.card');
     if (detailCard) {
@@ -1540,6 +1553,132 @@ function showCardDetails(category, type, rarity) {
         }, 300); // Match the faster transition duration in CSS (0.3s = 300ms)
     });
     
+    // Add functionality for the + button in developer mode
+    const addCardBtn = document.getElementById('addCardBtn');
+    if (addCardBtn && gameState.developerMode) {
+        addCardBtn.addEventListener('click', () => {
+            // Add the card to the collection
+            if (!gameState.collection[category]) {
+                gameState.collection[category] = {};
+            }
+            if (!gameState.collection[category][type]) {
+                gameState.collection[category][type] = [];
+            }
+            
+            // Add the card
+            gameState.collection[category][type].push(`${type}-${rarity}`);
+            
+            // Update the count display
+            const countElement = document.querySelector('.count-number');
+            if (countElement) {
+                const newCount = getCardCount(category, type, `${type}-${rarity}`);
+                countElement.textContent = newCount;
+                
+                // Update the sell button state if count is now > 1
+                if (newCount > 1) {
+                    const sellButton = document.getElementById('sellFromCollectionBtn');
+                    if (sellButton && sellButton.disabled) {
+                        sellButton.disabled = false;
+                        sellButton.className = 'claim-btn';
+                        sellButton.textContent = `Sell one for ${rarity === 'secret' ? '???' : value} Coins`;
+                        
+                        // Add the sell functionality to the button
+                        sellButton.addEventListener('click', function sellCardHandler() {
+                            // Remove card from collection
+                            const collectionArray = gameState.collection[category][type];
+                            const cardId = `${type}-${rarity}`;
+                            const cardIndex = collectionArray.indexOf(cardId);
+                            
+                            if (cardIndex !== -1) {
+                                // Remove card
+                                collectionArray.splice(cardIndex, 1);
+                                
+                                // Add value to coins
+                                let sellValue = value;
+                                
+                                // For secret cards, show slot machine animation
+                                if (rarity === 'secret') {
+                                    // Use the slot machine from the external file
+                                    runSlotMachineAnimation(700, 1500, (finalValue) => {
+                                        // This callback runs when the user clicks 'Awesome!'
+                                        sellValue = finalValue;
+                                        
+                                        // Show notification after closing the slot machine
+                                        showNotification(`Secret card sold for ${sellValue} coins!`, 'success', 'secret');
+                                        
+                                        // Update game state with the coins
+                                        gameState.coins += sellValue;
+                                        updateCoinsDisplay();
+                                        
+                                        // Update the card count display
+                                        const newCount = getCardCount(category, type, cardId);
+                                        countElement.textContent = newCount;
+                                        
+                                        // If this was the last card of this type, disable the sell button
+                                        if (newCount <= 1) {
+                                            sellButton.disabled = true;
+                                            sellButton.className = 'disabled-btn';
+                                            sellButton.textContent = `You can't sell your last one`;
+                                            
+                                            // Remove the event listener to prevent memory leaks
+                                            sellButton.removeEventListener('click', sellCardHandler);
+                                        }
+                                        
+                                        // Save game
+                                        saveGame();
+                                    });
+                                    
+                                    // Return early since we'll handle the notification after the animation
+                                    return;
+                                }
+                                
+                                gameState.coins += sellValue;
+                                updateCoinsDisplay();
+                                
+                                // Play sell sound
+                                playSound('sell');
+                                
+                                // For non-secret cards, we already showed the notification in the random value section
+                                if (rarity !== 'secret') {
+                                    showNotification(`Sold ${capitalizeFirstLetter(type)} (${capitalizeFirstLetter(rarity)}) for ${sellValue} coins!`, 'success', rarity);
+                                }
+                                
+                                // Save game
+                                saveGame();
+                                
+                                // Update the card count display
+                                const newCount = getCardCount(category, type, cardId);
+                                countElement.textContent = newCount;
+                                
+                                // If this was the last card of this type, disable the sell button
+                                if (newCount <= 1) {
+                                    sellButton.disabled = true;
+                                    sellButton.className = 'disabled-btn';
+                                    sellButton.textContent = `You can't sell your last one`;
+                                    
+                                    // Remove the event listener to prevent memory leaks
+                                    sellButton.removeEventListener('click', sellCardHandler);
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+            
+            // Show notification
+            showNotification(`Developer: Added ${capitalizeFirstLetter(rarity)} ${capitalizeFirstLetter(type)} card to collection`, 'success', rarity);
+            
+            // Play sound
+            playSound('reveal', rarity);
+            
+            // Check for set completion
+            checkSetCompletion(category, type);
+            
+            // Save game
+            saveGame();
+        });
+    }
+    
     // Add click event to the card image for full-resolution preview
     const cardPreviewImg = document.querySelector('.card-preview-img');
     if (cardPreviewImg) {
@@ -1559,50 +1698,106 @@ function showCardDetails(category, type, rarity) {
             const cardIndex = collectionArray.indexOf(cardId);
             
             if (cardIndex !== -1) {
-                // Remove card
+                // Remove card from collection
                 collectionArray.splice(cardIndex, 1);
                 
                 // Add value to coins
-                gameState.coins += value;
-                updateCoinsDisplay();
+                let sellValue = value;
                 
-                // Play sell sound
-                playSound('sell');
-                
-                // Check if set was complete and now isn't
-                const setId = `${category}-${type}`;
-                if (gameState.completedSets.includes(setId)) {
-                    const setIndex = gameState.completedSets.indexOf(setId);
-                    if (setIndex !== -1) {
-                        gameState.completedSets.splice(setIndex, 1);
+                // For secret cards, show slot machine animation
+                if (rarity === 'secret') {
+                    // Use the slot machine animation from the external file
+                    runSlotMachineAnimation(700, 1500, (finalValue) => {
+                        // This callback runs when the user clicks 'Awesome!'
+                        sellValue = finalValue;
+                        
+                        // Show notification after closing the slot machine
+                        showNotification(`Secret card sold for ${sellValue} coins!`, 'success', 'secret');
+                        
+                        // Update game state with the coins
+                        gameState.coins += sellValue;
+                        updateCoinsDisplay();
+                        
+                        // Check if set was complete and now isn't
+                        const setId = `${category}-${type}`;
+                        if (gameState.completedSets.includes(setId)) {
+                            const setIndex = gameState.completedSets.indexOf(setId);
+                            if (setIndex !== -1) {
+                                gameState.completedSets.splice(setIndex, 1);
+                            }
+                        }
+                        
+                        // Update UI without closing the modal
+                        renderCollection();
+                        
+                        // Update the card count in the modal
+                        const newCardCount = getCardCount(category, type, cardId);
+                        const countElement = cardModal.querySelector('.count-number');
+                        if (countElement) {
+                            countElement.textContent = newCardCount;
+                        }
+                        
+                        // Update the sell button if we now have only 1 card left
+                        if (newCardCount <= 1) {
+                            const sellButton = document.getElementById('sellFromCollectionBtn');
+                            if (sellButton) {
+                                sellButton.disabled = true;
+                                sellButton.className = 'disabled-btn';
+                                sellButton.textContent = "You can't sell your last one";
+                            }
+                        }
+                        
+                        // Save game
+                        saveGame();
+                    });
+                    
+                    // Return early since we'll handle everything in the callback
+                    return;
+                } else {
+                    // For non-secret cards, process immediately
+                    gameState.coins += sellValue;
+                    updateCoinsDisplay();
+                    
+                    // Play sell sound
+                    playSound('sell');
+                    
+                    const setId = `${category}-${type}`;
+                    if (gameState.completedSets.includes(setId)) {
+                        const setIndex = gameState.completedSets.indexOf(setId);
+                        if (setIndex !== -1) {
+                            gameState.completedSets.splice(setIndex, 1);
+                        }
                     }
-                }
-                
-                // Update UI without closing the modal
-                renderCollection();
-                
-                // Update the card count in the modal
-                const newCardCount = getCardCount(category, type, cardId);
-                const countElement = cardModal.querySelector('.count-number');
-                if (countElement) {
-                    countElement.textContent = newCardCount;
-                }
-                
-                // Update the sell button if we now have only 1 card left
-                if (newCardCount <= 1) {
-                    const sellButton = document.getElementById('sellFromCollectionBtn');
-                    if (sellButton) {
-                        sellButton.disabled = true;
-                        sellButton.className = 'disabled-btn';
-                        sellButton.textContent = "You can't sell your last one";
+                    
+                    // Update UI without closing the modal
+                    renderCollection();
+                    
+                    // Update the card count in the modal
+                    const newCardCount = getCardCount(category, type, cardId);
+                    const countElement = cardModal.querySelector('.count-number');
+                    if (countElement) {
+                        countElement.textContent = newCardCount;
                     }
+                    
+                    // Update the sell button if we now have only 1 card left
+                    if (newCardCount <= 1) {
+                        const sellButton = document.getElementById('sellFromCollectionBtn');
+                        if (sellButton) {
+                            sellButton.disabled = true;
+                            sellButton.className = 'disabled-btn';
+                            sellButton.textContent = "You can't sell your last one";
+                        }
+                    }
+                    
+                    // Show notification with card rarity color
+                    // For non-secret cards, we already showed the notification in the random value section
+                    if (rarity !== 'secret') {
+                        showNotification(`Sold ${capitalizeFirstLetter(type)} (${capitalizeFirstLetter(rarity)}) for ${sellValue} coins!`, 'success', rarity);
+                    }
+                    
+                    // Save game
+                    saveGame();
                 }
-                
-                // Show notification with card rarity color
-                showNotification(`Sold ${capitalizeFirstLetter(type)} (${capitalizeFirstLetter(rarity)}) for ${value} coins!`, 'success', rarity);
-                
-                // Save game
-                saveGame();
             }
         });
     }
@@ -1786,6 +1981,36 @@ function showCardDetails(category, type, rarity) {
             .drop-rate-value.legendary { color: #f1c40f; }
             .drop-rate-value.mythic { color: #e74c3c; }
             .drop-rate-value.secret { color: #1abc9c; }
+            
+            /* Developer add card button styling */
+            .dev-add-card-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 24px;
+                height: 24px;
+                background-color: #2ecc71;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                font-size: 16px;
+                font-weight: bold;
+                margin-left: 10px;
+                cursor: pointer;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+                transition: all 0.2s ease;
+            }
+            
+            .dev-add-card-btn:hover {
+                transform: scale(1.1);
+                background-color: #27ae60;
+            }
+            
+            .dev-add-card-btn:active {
+                transform: scale(0.95);
+            }
+            
+            /* Slot Machine styles are now in slotMachine.js */
             
             @keyframes stamp-animation {
                 0% { transform: rotate(15deg) scale(1); }

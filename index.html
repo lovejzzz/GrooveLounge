@@ -101,11 +101,12 @@
                 <div id="completionReward">
                     <p>You've earned a bonus of <span id="rewardAmount">500</span> coins!</p>
                 </div>
-                <button id="closeModalBtn" onclick="document.getElementById('completionModal').style.display='none';">Awesome!</button>
+                <button id="closeModalBtn" onclick="playSound('sell'); document.getElementById('completionModal').style.display='none';">Awesome!</button>
             </div>
         </div>
     </div>
 
+    <script src="slotMachine.js"></script>
     <script src="app.js"></script>
     <script>
         // Prevent spacebar from scrolling the page globally and trigger claim button
