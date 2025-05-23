@@ -195,13 +195,7 @@ function initGame() {
     
     // We'll handle tab navigation in the initGame function instead
     
-    // Add welcome animation
-    setTimeout(() => {
-        elements.lootBox.classList.add('pulse-animation');
-        setTimeout(() => {
-            elements.lootBox.classList.remove('pulse-animation');
-        }, 1000);
-    }, 500);
+    // Welcome animation is now handled individually for each box type in their respective event handlers
 }
 
 // Save game state to local storage
@@ -2489,7 +2483,6 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.claimCardBtn = document.getElementById('claimCardBtn');
     
     // Debug log to check if buttons exist
-    console.log('Open Box Button:', elements.openBoxBtn);
     console.log('Claim Card Button:', elements.claimCardBtn);
     
     // Add click events to all loot box types
